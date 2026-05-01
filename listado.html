@@ -83,6 +83,10 @@
           <button class="currency-option w-full px-4 py-2 text-sm text-text hover:bg-bg text-left" data-currency="CHF">CHF</button>
         </div>
       </div>
+      <button onclick="location.hash='favoritos';showFavoritesView()" class="relative flex items-center gap-1.5 text-sm text-muted hover:text-brand transition-colors px-2 py-1" title="Mis favoritos">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        <span id="fav-header-count" class="text-xs font-medium"></span>
+      </button>
       <button id="login-btn" class="btn btn-brand btn-sm" data-i18n="login">Iniciar sesión</button>
       <div id="user-menu" style="display:none" class="flex items-center gap-2">
         <span class="text-text text-sm" id="user-name"></span>
@@ -141,7 +145,22 @@
     <span class="text-text">Propiedades</span>
   </nav>
 
-  <div class="flex gap-6">
+  <!-- ===== FAVORITES PANEL (desktop) ===== -->
+  <div id="favorites-panel" style="display:none;">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h2 class="font-display text-3xl font-light">Mis favoritos</h2>
+        <p class="text-muted text-sm mt-1"><span id="fav-count-desktop">0</span> propiedades guardadas</p>
+      </div>
+      <button onclick="exitFavoritesView()" class="btn btn-outline flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Volver al listado
+      </button>
+    </div>
+    <div id="fav-grid-desktop" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </div>
+
+  <div id="listing-layout" class="flex gap-6">
     <!-- ===== SIDEBAR ===== -->
     <aside class="w-64 flex-shrink-0 hidden lg:block">
       <div class="bg-white rounded-xl border border-border p-5 sticky top-24">
@@ -320,10 +339,11 @@
       <div id="pagination"></div>
     </div>
   </div>
+  </div><!-- end listing-layout -->
 </main>
 
 <!-- ===== MOBILE MAIN ===== -->
-<main class="m-only" style="padding:16px 16px 20px;">
+<main id="m-listing-main" class="m-only" style="padding:16px 16px 20px;">
   <!-- Results count + sort -->
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
     <p style="font-size:0.82rem;color:var(--muted);">
@@ -345,6 +365,15 @@
     Cargar más propiedades
   </button>
 </main>
+
+<!-- ===== MOBILE FAVORITES SECTION ===== -->
+<section id="m-favorites-section" class="m-only" style="display:none;padding:16px 16px 80px;min-height:60vh;">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+    <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;font-weight:300;letter-spacing:-0.02em;">Mis favoritos</h2>
+    <span id="fav-count-mobile" style="font-size:0.75rem;color:var(--muted);background:var(--border);padding:3px 10px;border-radius:20px;"></span>
+  </div>
+  <div id="fav-grid-mobile"></div>
+</section>
 
 <!-- ===== MOBILE FILTER DRAWER ===== -->
 <div class="m-filter-drawer m-only" id="m-filter-drawer">

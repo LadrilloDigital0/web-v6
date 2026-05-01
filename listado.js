@@ -29,6 +29,7 @@ function initListing() {
   initSavedSearches();
   renderComparatorBar();
   renderViewedHistory();
+  if (window.location.hash === '#favoritos') showFavoritesView();
 }
 
 // ============================================================
@@ -545,3 +546,92 @@ function onLanguageChange() {
 }
 
 document.addEventListener('DOMContentLoaded', initListing);
+
+// ============================================================
+// FAVORITES VIEW
+// ============================================================
+function showFavoritesView() {
+  const isMob = window.innerWidth < 768;
+  if (isMob) {
+    document.getElementById('m-listing-main')?.style.setProperty('display', 'none');
+    document.querySelector('.m-filter-bar')?.style.setProperty('display', 'none');
+    document.getElementById('m-favorites-section').style.display = 'block';
+    renderFavoritesMobile();
+    document.querySelectorAll('.m-nav-item').forEach(el => el.classList.remove('active'));
+    document.querySelector('.m-nav-item[href*="favoritos"]')?.classList.add('active');
+  } else {
+    document.getElementById('listing-layout').style.display = 'none';
+    document.getElementById('favorites-panel').style.display = 'block';
+    renderFavoritesDesktop();
+  }
+}
+
+function exitFavoritesView() {
+  history.pushState('', document.title, window.location.pathname + window.location.search);
+  document.getElementById('listing-layout').style.display = 'flex';
+  document.getElementById('favorites-panel').style.display = 'none';
+}
+
+function renderFavoritesDesktop() {
+  const favProps = allProperties.filter(p => isFavorite(p.id));
+  document.getElementById('fav-count-desktop').textContent = favProps.length;
+  const grid = document.getElementById('fav-grid-desktop');
+  if (favProps.length === 0) {
+    grid.innerHTML = `<div class="col-span-full text-center py-24">
+      <p class="text-5xl mb-5" style="opacity:0.3;">♡</p>
+      <h3 class="font-display text-2xl text-muted font-light mb-2">Aún no tienes favoritos</h3>
+      <p class="text-muted text-sm mb-8">Guarda propiedades que te interesen tocando el icono ♡ en cada tarjeta</p>
+      <button onclick="exitFavoritesView()" class="btn btn-brand">Ver propiedades</button>
+    </div>`;
+  } else {
+    grid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6';
+    grid.innerHTML = favProps.map(p => renderPropertyCard(p)).join('');
+    updateFavoriteButtons();
+  }
+}
+
+function renderFavoritesMobile() {
+  const favProps = allProperties.filter(p => isFavorite(p.id));
+  const countEl = document.getElementById('fav-count-mobile');
+  const grid = document.getElementById('fav-grid-mobile');
+  countEl.textContent = favProps.length + ' guardadas';
+  if (favProps.length === 0) {
+    grid.innerHTML = `<div style="text-align:center;padding:60px 0;">
+      <p style="font-size:3.5rem;margin-bottom:16px;opacity:0.25;">♡</p>
+      <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.4rem;color:var(--muted);margin-bottom:8px;font-weight:300;">Aún no tienes favoritos</p>
+      <p style="font-size:0.83rem;color:var(--muted);margin-bottom:24px;line-height:1.6;">Guarda propiedades tocando el icono ♡ en cada tarjeta</p>
+      <a href="listado.html" style="display:inline-block;background:var(--brand);color:var(--accent);padding:13px 28px;border-radius:10px;font-size:0.9rem;font-weight:600;text-decoration:none;">Ver propiedades</a>
+    </div>`;
+  } else {
+    grid.innerHTML = favProps.map(p => `
+      <div style="background:#fff;border-radius:14px;overflow:hidden;margin-bottom:14px;border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.06);cursor:pointer;" onclick="location.href='propiedad.html?id=${p.id}'">
+        <div style="position:relative;height:175px;overflow:hidden;">
+          <img src="${p.photos[0]}" alt="${localText(p.title)}" style="width:100%;height:100%;object-fit:cover;" loading="lazy">
+          <div style="position:absolute;top:10px;left:10px;">
+            <span style="background:var(--brand);color:var(--accent);font-size:0.68rem;font-weight:600;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:0.05em;">${p.type}</span>
+          </div>
+          <button style="position:absolute;top:8px;right:8px;background:rgba(255,255,255,0.95);border:none;border-radius:50%;width:34px;height:34px;font-size:1.1rem;cursor:pointer;color:#e74c3c;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.15);"
+            data-fav-id="${p.id}" onclick="event.stopPropagation();toggleFavorite(${p.id});renderFavoritesMobile();">♥</button>
+        </div>
+        <div style="padding:12px 14px;">
+          <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.05rem;font-weight:500;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${localText(p.title)}</p>
+          <p style="font-size:0.78rem;color:var(--muted);margin-bottom:8px;">${p.city} · ${p.neighbourhood}</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.15rem;color:var(--brand);font-weight:600;">
+              ${p.type === 'alquiler' ? p.price.toLocaleString('es-ES') + ' €/mes' : (p.price >= 1000000 ? (p.price/1000000).toFixed(2).replace('.',',') + 'M €' : p.price.toLocaleString('es-ES') + ' €')}
+            </p>
+            <span style="font-size:0.73rem;color:var(--muted);">${p.m2} m² · ${p.bedrooms} hab.</span>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+}
+
+window.addEventListener('hashchange', () => {
+  if (window.location.hash === '#favoritos') showFavoritesView();
+  else {
+    document.getElementById('m-listing-main')?.style.removeProperty('display');
+    document.querySelector('.m-filter-bar')?.style.removeProperty('display');
+    document.getElementById('m-favorites-section').style.display = 'none';
+  }
+});
