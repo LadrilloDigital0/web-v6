@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administración — Inmobiliaria Prueba</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="tailwind-config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { font-family: 'DM Sans', system-ui, sans-serif; }
+
+    /* === SIDEBAR === */
+    .admin-sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 240px;
+      height: 100vh;
+      z-index: 50;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform 0.28s ease;
+    }
+    @media (min-width: 768px) {
+      .admin-sidebar { transform: translateX(0); }
+    }
+    .admin-sidebar.mobile-open { transform: translateX(0) !important; }
+
+    /* Sidebar overlay (mobile) */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 45;
+    }
+    .sidebar-overlay.open { display: block; }
+
+    /* === MAIN CONTENT === */
+    .admin-content { min-height: 100vh; }
+    @media (min-width: 768px) { .admin-content { margin-left: 240px; } }
+
+    /* === MOBILE BOTTOM NAV === */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      height: 58px;
+      background: #1C3A2F;
+      z-index: 30;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      align-items: stretch;
+    }
+    @media (max-width: 767px) {
+      .mobile-bottom-nav { display: flex; }
+      body { padding-bottom: 58px; }
+    }
+
+    .m-nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.57rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+    .m-nav-btn.active { color: #C9A96E; }
+    .m-nav-btn svg { width: 20px; height: 20px; }
+
+    /* === TABLE RESPONSIVE === */
+    .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* === STATUS BADGES === */
+    .table-row { transition: background 0.15s; }
+    .table-row:hover { background: var(--bg); }
+    .status-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; padding: 3px 8px; border-radius: 20px; }
+    .status-published { background: #d1fae5; color: #065f46; }
+    .status-draft { background: #fef3c7; color: #92400e; }
+    .status-archived { background: #f1f5f9; color: #475569; }
+
+    /* === UPLOAD ZONE === */
+    .upload-zone { border: 2px dashed var(--border); border-radius: 8px; padding: 32px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .upload-zone:hover { border-color: var(--brand); background: rgba(28,58,47,0.03); }
+    .upload-zone.dragover { border-color: var(--accent); background: rgba(201,169,110,0.08); }
+
+    /* === MODAL: bottom sheet on mobile === */
+    @media (max-width: 767px) {
+      #new-prop-modal { align-items: flex-end; padding: 0; }
+      #new-prop-modal > div {
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+        border-radius: 20px 20px 0 0;
+        max-height: 92vh;
+      }
+    }
+
+    /* === TOP BAR HAMBURGER === */
+    .hamburger-btn {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    @media (max-width: 767px) { .hamburger-btn { display: flex; } }
+
+    /* Mobile section padding adjustment */
+    @media (max-width: 767px) {
+      .admin-content > section { padding: 16px !important; }
+      .admin-content > div { padding-left: 16px; padding-right: 16px; }
+    }
+  </style>
+</head>
+<body class="font-body bg-bg text-text">
+
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeMobileSidebar()"></div>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="admin-sidebar">
+  <div class="p-6 border-b border-white/10">
+    <div class="logo-text text-lg">Inmobiliaria Prueba</div>
+    <p class="text-white/40 text-xs mt-1">Panel de administración</p>
+  </div>
+  <nav class="py-4 flex-1">
+    <div class="px-3 mb-2">
+      <p class="text-white/30 text-xs uppercase tracking-widest px-3 mb-1">Principal</p>
+    </div>
+    <a href="javascript:void(0)" class="admin-nav-link active" data-section="dashboard" onclick="showSection('dashboard')">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM14 13a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+      Dashboard
+    </a>
+    <a href="javascript:void(0)" class="admin-nav-link" data-section="properties" onclick="showSection('properties')">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Inmuebles
+    </a>
+    <a href="javascript:void(0)" class="admin-nav-link" data-section="leads" onclick="showSection('leads')">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+      Leads / Consultas
+    </a>
+    <a href="javascript:void(0)" class="admin-nav-link" data-section="agents" onclick="showSection('agents')">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+      Agentes
+    </a>
+    <div class="px-3 mt-4 mb-2">
+      <p class="text-white/30 text-xs uppercase tracking-widest px-3 mb-1">Análisis</p>
+    </div>
+    <a href="javascript:void(0)" class="admin-nav-link" data-section="stats" onclick="showSection('stats')">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      Estadísticas
+    </a>
+    <div class="mt-6 border-t border-white/10 pt-4">
+      <a href="index.html" class="admin-nav-link">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Ver sitio web
+      </a>
+    </div>
+  </nav>
+  <div class="p-4 border-t border-white/10">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm font-bold flex-shrink-0">A</div>
+      <div class="min-w-0">
+        <p class="text-white text-xs font-medium">Admin</p>
+        <p class="text-white/40 text-xs truncate">admin@inmob.es</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="admin-content">
+  <!-- Top bar -->
+  <div class="bg-white border-b border-border px-4 md:px-6 py-3 flex items-center justify-between gap-3 sticky top-0 z-20">
+    <div class="flex items-center gap-3 min-w-0">
+      <button class="hamburger-btn" onclick="toggleMobileSidebar()" aria-label="Menú">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <h1 id="section-title" class="font-display text-lg md:text-xl font-medium truncate">Dashboard</h1>
+    </div>
+    <div class="flex items-center gap-2 md:gap-3 flex-shrink-0">
+      <span class="text-muted text-sm hidden sm:block" id="current-date"></span>
+      <button onclick="showSection('properties'); openNewPropertyModal()" class="btn btn-primary btn-sm whitespace-nowrap">+ Nueva propiedad</button>
+    </div>
+  </div>
+
+  <!-- ===== DASHBOARD ===== -->
+  <section id="section-dashboard" class="p-6">
+    <!-- Stats cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6">
+      <div class="stat-card">
+        <p class="text-muted text-xs uppercase tracking-wider mb-1">Inmuebles activos</p>
+        <p class="font-display text-3xl font-light text-brand">12</p>
+        <p class="text-green-600 text-xs mt-1">↑ 2 este mes</p>
+      </div>
+      <div class="stat-card" style="border-left-color:var(--accent-dark);">
+        <p class="text-muted text-xs uppercase tracking-wider mb-1">Visitas totales</p>
+        <p class="font-display text-3xl font-light" style="color:var(--accent-dark);">5.847</p>
+        <p class="text-green-600 text-xs mt-1">↑ 18% vs mes anterior</p>
+      </div>
+      <div class="stat-card" style="border-left-color:#7c3aed;">
+        <p class="text-muted text-xs uppercase tracking-wider mb-1">Leads recibidos</p>
+        <p class="font-display text-3xl font-light text-purple-700">43</p>
+        <p class="text-green-600 text-xs mt-1">↑ 12 esta semana</p>
+      </div>
+      <div class="stat-card" style="border-left-color:#0891b2;">
+        <p class="text-muted text-xs uppercase tracking-wider mb-1">Ventas cerradas</p>
+        <p class="font-display text-3xl font-light text-cyan-700">3</p>
+        <p class="text-muted text-xs mt-1">Este mes</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+      <!-- Visits chart -->
+      <div class="lg:col-span-2 bg-white rounded-xl border border-border p-4 md:p-5">
+        <h3 class="font-semibold text-sm mb-4">Visitas por inmueble (últimos 30 días)</h3>
+        <div style="height:180px;">
+          <canvas id="visits-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Recent leads -->
+      <div class="bg-white rounded-xl border border-border p-4 md:p-5">
+        <h3 class="font-semibold text-sm mb-4">Leads recientes</h3>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3 pb-3 border-b border-border">
+            <div class="w-8 h-8 rounded-full bg-brand/10 flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">MG</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium">María García</p>
+              <p class="text-xs text-muted truncate">Ático con terraza en Salamanca</p>
+              <p class="text-xs text-muted">hace 2h</p>
+            </div>
+            <span class="status-badge status-published text-xs flex-shrink-0">Nuevo</span>
+          </div>
+          <div class="flex items-start gap-3 pb-3 border-b border-border">
+            <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent-dark text-xs font-bold flex-shrink-0">JP</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium">Johann Pérez</p>
+              <p class="text-xs text-muted truncate">Villa con piscina en La Moraleja</p>
+              <p class="text-xs text-muted">hace 5h</p>
+            </div>
+            <span class="status-badge status-draft text-xs flex-shrink-0">Pendiente</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 text-xs font-bold flex-shrink-0">AS</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-medium">Ana Smith</p>
+              <p class="text-xs text-muted truncate">Piso Eixample Barcelona</p>
+              <p class="text-xs text-muted">hace 1 día</p>
+            </div>
+            <span class="status-badge status-archived text-xs flex-shrink-0">Gestionado</span>
+          </div>
+        </div>
+        <button onclick="showSection('leads')" class="btn btn-outline btn-sm w-full mt-4 justify-center">Ver todos los leads</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROPERTIES ===== -->
+  <section id="section-properties" class="p-6 hidden">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-6">
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+        <input type="text" placeholder="Buscar inmuebles..." id="admin-prop-search" class="px-4 py-2.5 bg-white border border-border rounded text-sm outline-none focus:border-brand w-full sm:w-64">
+        <select class="px-3 py-2.5 bg-white border border-border rounded text-sm outline-none focus:border-brand appearance-none">
+          <option>Todos los estados</option>
+          <option>Publicados</option>
+          <option>Borrador</option>
+          <option>Archivados</option>
+        </select>
+      </div>
+      <button onclick="openNewPropertyModal()" class="btn btn-brand btn-sm flex-shrink-0 self-start sm:self-auto">+ Nuevo inmueble</button>
+    </div>
+
+    <!-- Desktop table -->
+    <div class="hidden sm:block bg-white rounded-xl border border-border overflow-hidden">
+      <div class="table-wrap">
+        <table class="w-full text-sm">
+          <thead class="bg-bg border-b border-border">
+            <tr>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider">Inmueble</th>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider hidden md:table-cell">Ciudad</th>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider hidden lg:table-cell">Precio</th>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider">Estado</th>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider hidden lg:table-cell">Visitas</th>
+              <th class="text-right p-4 font-semibold text-muted text-xs uppercase tracking-wider">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="admin-prop-table">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mobile cards -->
+    <div class="sm:hidden space-y-3" id="admin-prop-cards">
+      <!-- Populated by JS -->
+    </div>
+  </section>
+
+  <!-- ===== LEADS ===== -->
+  <section id="section-leads" class="p-6 hidden">
+    <!-- Desktop table -->
+    <div class="hidden sm:block bg-white rounded-xl border border-border overflow-hidden">
+      <div class="table-wrap">
+        <table class="w-full text-sm">
+          <thead class="bg-bg border-b border-border">
+            <tr>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider">Cliente</th>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider hidden md:table-cell">Inmueble de interés</th>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider hidden lg:table-cell">Fecha</th>
+              <th class="text-left p-4 font-semibold text-muted text-xs uppercase tracking-wider">Estado</th>
+              <th class="text-right p-4">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-row border-b border-border">
+              <td class="p-4">
+                <p class="font-medium">María García</p>
+                <p class="text-muted text-xs">maria@email.com · +34 612 345 678</p>
+              </td>
+              <td class="p-4 hidden md:table-cell text-muted text-xs">Ático con terraza — Salamanca</td>
+              <td class="p-4 hidden lg:table-cell text-muted text-xs">27/04/2025 · 10:23</td>
+              <td class="p-4"><span class="status-badge status-published">Nuevo</span></td>
+              <td class="p-4 text-right">
+                <button class="text-brand text-xs hover:underline mr-3" onclick="showLeadDetail('María García')">Ver</button>
+                <button class="text-muted text-xs hover:text-text">Archivar</button>
+              </td>
+            </tr>
+            <tr class="table-row border-b border-border">
+              <td class="p-4">
+                <p class="font-medium">Johann Pérez</p>
+                <p class="text-muted text-xs">johann@email.de · +49 123 456 789</p>
+              </td>
+              <td class="p-4 hidden md:table-cell text-muted text-xs">Villa La Moraleja — Madrid</td>
+              <td class="p-4 hidden lg:table-cell text-muted text-xs">27/04/2025 · 07:45</td>
+              <td class="p-4"><span class="status-badge status-draft">Pendiente</span></td>
+              <td class="p-4 text-right">
+                <button class="text-brand text-xs hover:underline mr-3">Ver</button>
+                <button class="text-muted text-xs hover:text-text">Archivar</button>
+              </td>
+            </tr>
+            <tr class="table-row border-b border-border">
+              <td class="p-4">
+                <p class="font-medium">Ana Smith</p>
+                <p class="text-muted text-xs">ana@email.co.uk · +44 789 012 345</p>
+              </td>
+              <td class="p-4 hidden md:table-cell text-muted text-xs">Piso Eixample — Barcelona</td>
+              <td class="p-4 hidden lg:table-cell text-muted text-xs">26/04/2025 · 15:30</td>
+              <td class="p-4"><span class="status-badge status-archived">Gestionado</span></td>
+              <td class="p-4 text-right">
+                <button class="text-brand text-xs hover:underline mr-3">Ver</button>
+                <button class="text-muted text-xs hover:text-text">Eliminar</button>
+              </td>
+            </tr>
+            <tr class="table-row">
+              <td class="p-4">
+                <p class="font-medium">Pierre Dupont</p>
+                <p class="text-muted text-xs">pierre@email.fr · +33 612 987 654</p>
+              </td>
+              <td class="p-4 hidden md:table-cell text-muted text-xs">Penthouse Valencia — Ciudad de las Artes</td>
+              <td class="p-4 hidden lg:table-cell text-muted text-xs">25/04/2025 · 09:15</td>
+              <td class="p-4"><span class="status-badge status-draft">Pendiente</span></td>
+              <td class="p-4 text-right">
+                <button class="text-brand text-xs hover:underline mr-3">Ver</button>
+                <button class="text-muted text-xs hover:text-text">Archivar</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mobile lead cards -->
+    <div class="sm:hidden space-y-3">
+      <div class="bg-white rounded-xl border border-border p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-brand/10 flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">MG</div>
+            <div>
+              <p class="font-medium text-sm">María García</p>
+              <p class="text-muted text-xs">maria@email.com</p>
+            </div>
+          </div>
+          <span class="status-badge status-published flex-shrink-0">Nuevo</span>
+        </div>
+        <p class="text-xs text-muted mt-3 mb-1">Ático con terraza — Salamanca</p>
+        <p class="text-xs text-muted mb-3">27/04/2025 · 10:23</p>
+        <div class="flex gap-2">
+          <button class="btn btn-outline btn-sm flex-1 justify-center" onclick="showLeadDetail('María García')">Ver detalle</button>
+          <button class="btn btn-sm flex-1 justify-center text-muted border border-border">Archivar</button>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-border p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-accent/20 flex items-center justify-center text-accent-dark text-xs font-bold flex-shrink-0">JP</div>
+            <div>
+              <p class="font-medium text-sm">Johann Pérez</p>
+              <p class="text-muted text-xs">johann@email.de</p>
+            </div>
+          </div>
+          <span class="status-badge status-draft flex-shrink-0">Pendiente</span>
+        </div>
+        <p class="text-xs text-muted mt-3 mb-1">Villa La Moraleja — Madrid</p>
+        <p class="text-xs text-muted mb-3">27/04/2025 · 07:45</p>
+        <div class="flex gap-2">
+          <button class="btn btn-outline btn-sm flex-1 justify-center">Ver detalle</button>
+          <button class="btn btn-sm flex-1 justify-center text-muted border border-border">Archivar</button>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-border p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 text-xs font-bold flex-shrink-0">AS</div>
+            <div>
+              <p class="font-medium text-sm">Ana Smith</p>
+              <p class="text-muted text-xs">ana@email.co.uk</p>
+            </div>
+          </div>
+          <span class="status-badge status-archived flex-shrink-0">Gestionado</span>
+        </div>
+        <p class="text-xs text-muted mt-3 mb-1">Piso Eixample — Barcelona</p>
+        <p class="text-xs text-muted mb-3">26/04/2025 · 15:30</p>
+        <div class="flex gap-2">
+          <button class="btn btn-outline btn-sm flex-1 justify-center">Ver detalle</button>
+          <button class="btn btn-sm flex-1 justify-center text-muted border border-border">Eliminar</button>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-border p-4">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-cyan-100 flex items-center justify-center text-cyan-700 text-xs font-bold flex-shrink-0">PD</div>
+            <div>
+              <p class="font-medium text-sm">Pierre Dupont</p>
+              <p class="text-muted text-xs">pierre@email.fr</p>
+            </div>
+          </div>
+          <span class="status-badge status-draft flex-shrink-0">Pendiente</span>
+        </div>
+        <p class="text-xs text-muted mt-3 mb-1">Penthouse Valencia — Ciudad de las Artes</p>
+        <p class="text-xs text-muted mb-3">25/04/2025 · 09:15</p>
+        <div class="flex gap-2">
+          <button class="btn btn-outline btn-sm flex-1 justify-center">Ver detalle</button>
+          <button class="btn btn-sm flex-1 justify-center text-muted border border-border">Archivar</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AGENTS ===== -->
+  <section id="section-agents" class="p-6 hidden">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="font-semibold text-sm text-muted">Equipo de agentes</h2>
+      <button class="btn btn-brand btn-sm">+ Nuevo agente</button>
+    </div>
+    <div id="agents-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"></div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <section id="section-stats" class="p-6 hidden">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+      <div class="bg-white rounded-xl border border-border p-4 md:p-5">
+        <h3 class="font-semibold text-sm mb-4">Visitas por mes</h3>
+        <div style="height:200px;"><canvas id="monthly-chart"></canvas></div>
+      </div>
+      <div class="bg-white rounded-xl border border-border p-4 md:p-5">
+        <h3 class="font-semibold text-sm mb-4">Leads por ciudad</h3>
+        <div style="height:200px;"><canvas id="city-chart"></canvas></div>
+      </div>
+      <div class="bg-white rounded-xl border border-border p-4 md:p-5">
+        <h3 class="font-semibold text-sm mb-4">Inmuebles más visitados</h3>
+        <div style="height:200px;"><canvas id="top-props-chart"></canvas></div>
+      </div>
+      <div class="bg-white rounded-xl border border-border p-4 md:p-5">
+        <h3 class="font-semibold text-sm mb-4">Tipo de operación</h3>
+        <div style="height:200px;"><canvas id="type-chart"></canvas></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== MOBILE BOTTOM NAV ===== -->
+<nav class="mobile-bottom-nav">
+  <button class="m-nav-btn active" id="mnav-dashboard" onclick="showSection('dashboard')">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM14 13a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+    Inicio
+  </button>
+  <button class="m-nav-btn" id="mnav-properties" onclick="showSection('properties')">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    Inmuebles
+  </button>
+  <button class="m-nav-btn" id="mnav-leads" onclick="showSection('leads')">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+    Leads
+  </button>
+  <button class="m-nav-btn" id="mnav-agents" onclick="showSection('agents')">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    Agentes
+  </button>
+  <button class="m-nav-btn" id="mnav-stats" onclick="showSection('stats')">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+    Stats
+  </button>
+</nav>
+
+<!-- ===== NEW PROPERTY MODAL ===== -->
+<div id="new-prop-modal" class="modal-overlay">
+  <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-auto mx-4 shadow-2xl">
+    <div class="flex items-center justify-between p-5 md:p-6 border-b border-border">
+      <h2 class="font-display text-xl md:text-2xl font-medium" id="prop-modal-title">Nuevo inmueble</h2>
+      <button onclick="closeModal('new-prop-modal')" class="text-muted hover:text-text text-2xl leading-none">×</button>
+    </div>
+    <form id="new-prop-form" class="p-5 md:p-6 space-y-5" onsubmit="saveProperty(event)">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+        <div class="field sm:col-span-2">
+          <label>Título</label>
+          <input name="title" type="text" required placeholder="Título del inmueble">
+        </div>
+        <div class="field">
+          <label>Tipo de operación</label>
+          <select name="type"><option value="venta">Venta</option><option value="alquiler">Alquiler</option></select>
+        </div>
+        <div class="field">
+          <label>Precio (€)</label>
+          <input name="price" type="number" required min="0">
+        </div>
+        <div class="field">
+          <label>Superficie (m²)</label>
+          <input name="m2" type="number" required min="0">
+        </div>
+        <div class="field">
+          <label>Habitaciones</label>
+          <input name="bedrooms" type="number" min="0" max="20">
+        </div>
+        <div class="field">
+          <label>Baños</label>
+          <input name="bathrooms" type="number" min="0" max="10">
+        </div>
+        <div class="field">
+          <label>Ciudad</label>
+          <input name="city" type="text" placeholder="Madrid, Barcelona...">
+        </div>
+        <div class="field">
+          <label>Certificado energético</label>
+          <select name="energyCert">
+            <option>A</option><option>B</option><option>C</option>
+            <option>D</option><option>E</option><option>F</option><option>G</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Agente</label>
+          <select name="agent">
+            <option value="1">Elena Martínez</option>
+            <option value="2">Carlos Ruiz</option>
+            <option value="3">Sofía Delgado</option>
+          </select>
+        </div>
+        <div class="field sm:col-span-2">
+          <label>Descripción</label>
+          <textarea name="description" rows="4" placeholder="Descripción del inmueble..."></textarea>
+        </div>
+      </div>
+      <!-- Photo upload -->
+      <div>
+        <label class="text-xs font-semibold uppercase tracking-wider text-muted block mb-2">Fotos</label>
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('photo-upload').click()">
+          <svg class="w-10 h-10 text-muted mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          <p class="text-muted text-sm">Arrastra fotos aquí o <span class="text-brand underline">selecciona archivos</span></p>
+          <p class="text-muted text-xs mt-1">JPG, PNG, WebP — Máx 10MB por imagen</p>
+          <input type="file" id="photo-upload" multiple accept="image/*" class="hidden" onchange="handlePhotoUpload(this)">
+        </div>
+        <div id="photo-preview" class="flex flex-wrap gap-2 mt-3"></div>
+      </div>
+      <!-- Featured toggle -->
+      <label class="flex items-center gap-3 cursor-pointer">
+        <div class="relative">
+          <input type="checkbox" name="featured" class="sr-only peer">
+          <div class="w-10 h-5 bg-border rounded-full peer peer-checked:bg-brand transition-colors"></div>
+          <div class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-5"></div>
+        </div>
+        <span class="text-sm font-medium">Marcar como destacado</span>
+      </label>
+      <div class="flex gap-3 pt-2">
+        <button type="submit" name="action" value="publish" class="btn btn-brand flex-1 justify-center">Publicar inmueble</button>
+        <button type="submit" name="action" value="draft" class="btn btn-outline flex-1 justify-center">Guardar borrador</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="properties.js"></script>
+<script src="main.js"></script>
+<script>
+  // Current date
+  document.getElementById('current-date').textContent = new Date().toLocaleDateString('es-ES', { weekday:'long', day:'numeric', month:'long' });
+
+  // Mobile sidebar
+  function toggleMobileSidebar() {
+    const sidebar = document.querySelector('.admin-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    const isOpen = sidebar.classList.contains('mobile-open');
+    if (isOpen) {
+      sidebar.classList.remove('mobile-open');
+      overlay.classList.remove('open');
+    } else {
+      sidebar.classList.add('mobile-open');
+      overlay.classList.add('open');
+    }
+  }
+
+  function closeMobileSidebar() {
+    document.querySelector('.admin-sidebar').classList.remove('mobile-open');
+    document.getElementById('sidebar-overlay').classList.remove('open');
+  }
+
+  // Section navigation
+  const sectionTitles = { dashboard:'Dashboard', properties:'Gestión de inmuebles', leads:'Leads y consultas', agents:'Agentes', stats:'Estadísticas' };
+
+  function showSection(name) {
+    document.querySelectorAll('[id^="section-"]').forEach(s => s.classList.add('hidden'));
+    document.getElementById('section-' + name)?.classList.remove('hidden');
+
+    // Sidebar nav active
+    document.querySelectorAll('.admin-nav-link').forEach(l => l.classList.remove('active'));
+    document.querySelector(`.admin-nav-link[data-section="${name}"]`)?.classList.add('active');
+
+    // Bottom nav active
+    document.querySelectorAll('.m-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('mnav-' + name)?.classList.add('active');
+
+    document.getElementById('section-title').textContent = sectionTitles[name] || name;
+
+    closeMobileSidebar();
+
+    if (name === 'properties') renderAdminProps();
+    if (name === 'agents') renderAdminAgents();
+    if (name === 'stats') renderStatCharts();
+  }
+
+  // Admin property table + mobile cards
+  function renderAdminProps() {
+    if (typeof properties === 'undefined') return;
+
+    // Desktop table
+    const tbody = document.getElementById('admin-prop-table');
+    if (tbody) {
+      tbody.innerHTML = properties.map(p => `
+        <tr class="table-row border-b border-border">
+          <td class="p-4">
+            <div class="flex items-center gap-3">
+              <img src="${p.photos[0]}" class="w-12 h-10 object-cover rounded flex-shrink-0">
+              <div>
+                <p class="font-medium text-sm line-clamp-1">${localText(p.title)}</p>
+                <p class="text-muted text-xs">${localText(p.address)}</p>
+              </div>
+            </div>
+          </td>
+          <td class="p-4 hidden md:table-cell text-sm text-muted">${p.city}</td>
+          <td class="p-4 hidden lg:table-cell text-sm font-medium">${formatPrice(p.price)}</td>
+          <td class="p-4">
+            <span class="status-badge ${p.featured ? 'status-published' : 'status-draft'}">${p.featured ? '★ Destacado' : 'Activo'}</span>
+          </td>
+          <td class="p-4 hidden lg:table-cell text-sm text-muted">${p.visits || 0}</td>
+          <td class="p-4 text-right whitespace-nowrap">
+            <a href="propiedad.html?id=${p.id}" target="_blank" class="text-brand text-xs hover:underline mr-3">Ver</a>
+            <button class="text-muted text-xs hover:text-text mr-3" onclick="editProperty(${p.id})">Editar</button>
+            <button class="text-xs ${p.featured?'text-accent-dark hover:text-accent':'text-muted hover:text-accent-dark'}" onclick="toggleFeaturedAdmin(${p.id})">
+              ${p.featured ? '★ Destacado' : '☆ Destacar'}
+            </button>
+          </td>
+        </tr>`).join('');
+    }
+
+    // Mobile cards
+    const cards = document.getElementById('admin-prop-cards');
+    if (cards) {
+      cards.innerHTML = properties.map(p => `
+        <div class="bg-white rounded-xl border border-border overflow-hidden">
+          <div class="flex gap-3 p-3">
+            <img src="${p.photos[0]}" class="w-20 h-16 object-cover rounded-lg flex-shrink-0">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
+                <p class="font-medium text-sm line-clamp-2 leading-tight">${localText(p.title)}</p>
+                <span class="status-badge ${p.featured ? 'status-published' : 'status-draft'} flex-shrink-0">${p.featured ? '★' : 'Activo'}</span>
+              </div>
+              <p class="text-muted text-xs mt-1">${p.city} · ${formatPrice(p.price)}</p>
+              <p class="text-muted text-xs">${p.visits || 0} visitas</p>
+            </div>
+          </div>
+          <div class="flex border-t border-border divide-x divide-border">
+            <a href="propiedad.html?id=${p.id}" target="_blank" class="flex-1 py-2 text-center text-brand text-xs font-medium">Ver</a>
+            <button class="flex-1 py-2 text-center text-muted text-xs" onclick="editProperty(${p.id})">Editar</button>
+            <button class="flex-1 py-2 text-center text-xs ${p.featured?'text-accent-dark':'text-muted'}" onclick="toggleFeaturedAdmin(${p.id})">
+              ${p.featured ? '★ Quitar' : '☆ Destacar'}
+            </button>
+          </div>
+        </div>`).join('');
+    }
+  }
+
+  function toggleFeaturedAdmin(id) {
+    const p = properties.find(p => p.id === id);
+    if (p) { p.featured = !p.featured; renderAdminProps(); showToast(p.featured ? 'Marcado como destacado' : 'Destacado eliminado'); }
+  }
+
+  function editProperty(id) {
+    const p = properties.find(p => p.id === id);
+    if (!p) return;
+    document.getElementById('prop-modal-title').textContent = 'Editar inmueble';
+    const form = document.getElementById('new-prop-form');
+    form.querySelector('[name="title"]').value = localText(p.title);
+    form.querySelector('[name="price"]').value = p.price;
+    form.querySelector('[name="m2"]').value = p.m2;
+    form.querySelector('[name="bedrooms"]').value = p.bedrooms;
+    form.querySelector('[name="bathrooms"]').value = p.bathrooms;
+    form.querySelector('[name="city"]').value = p.city;
+    form.querySelector('[name="type"]').value = p.type;
+    openModal('new-prop-modal');
+  }
+
+  function openNewPropertyModal() {
+    document.getElementById('prop-modal-title').textContent = 'Nuevo inmueble';
+    document.getElementById('new-prop-form').reset();
+    openModal('new-prop-modal');
+  }
+
+  function saveProperty(e) {
+    e.preventDefault();
+    closeModal('new-prop-modal');
+    showToast('Inmueble guardado con éxito');
+  }
+
+  function handlePhotoUpload(input) {
+    const preview = document.getElementById('photo-preview');
+    preview.innerHTML = '';
+    Array.from(input.files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = 'w-20 h-16 object-cover rounded border border-border';
+        preview.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Drag and drop
+  const uploadZone = document.getElementById('upload-zone');
+  if (uploadZone) {
+    uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault(); uploadZone.classList.remove('dragover');
+      const input = document.getElementById('photo-upload');
+      const dt = new DataTransfer();
+      Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+      input.files = dt.files;
+      handlePhotoUpload(input);
+    });
+  }
+
+  // Agents
+  function renderAdminAgents() {
+    const grid = document.getElementById('agents-grid');
+    if (!grid || typeof agents === 'undefined') return;
+    grid.innerHTML = agents.map(agent => `
+      <div class="bg-white rounded-xl border border-border p-5 md:p-6 text-center">
+        <img src="${agent.photo}" class="w-20 h-20 rounded-full object-cover mx-auto mb-4 border-2 border-accent">
+        <h3 class="font-semibold mb-0.5">${agent.name}</h3>
+        <p class="text-muted text-sm mb-3">${localText(agent.role)}</p>
+        <p class="text-muted text-xs mb-1">${agent.phone}</p>
+        <p class="text-muted text-xs mb-4">${agent.email}</p>
+        <div class="flex gap-2 justify-center">
+          <button class="btn btn-outline btn-sm">Editar</button>
+          <a href="listado.html?agente=${agent.id}" class="btn btn-brand btn-sm">Ver pisos</a>
+        </div>
+      </div>`).join('');
+  }
+
+  function showLeadDetail(name) {
+    showToast('Abriendo detalle de: ' + name);
+  }
+
+  // Charts
+  function renderStatCharts() {
+    const months = ['Oct','Nov','Dic','Ene','Feb','Mar','Abr'];
+    const chartDefaults = { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } };
+
+    // Dashboard visits chart
+    const vc = document.getElementById('visits-chart');
+    if (vc && !vc._chart) {
+      vc._chart = new Chart(vc, {
+        type: 'bar',
+        data: {
+          labels: (typeof properties !== 'undefined' ? properties.slice(0,6) : []).map(p => localText(p.title).slice(0,20) + '…'),
+          datasets: [{ data: (typeof properties !== 'undefined' ? properties.slice(0,6) : []).map(p => p.visits||0), backgroundColor: '#1C3A2F', borderRadius: 4 }]
+        },
+        options: { ...chartDefaults, scales: { y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)' } }, x: { grid: { display: false }, ticks: { maxRotation: 45 } } } }
+      });
+    }
+
+    // Monthly
+    const mc = document.getElementById('monthly-chart');
+    if (mc && !mc._chart) {
+      mc._chart = new Chart(mc, {
+        type: 'line',
+        data: {
+          labels: months,
+          datasets: [{ label: 'Visitas', data: [820,940,1100,1380,1250,1480,1620], borderColor: '#1C3A2F', backgroundColor: 'rgba(28,58,47,0.08)', tension: 0.3, fill: true, pointBackgroundColor: '#C9A96E' }]
+        },
+        options: { ...chartDefaults, plugins: { legend: { display: true } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
+      });
+    }
+
+    // City
+    const cc = document.getElementById('city-chart');
+    if (cc && !cc._chart) {
+      cc._chart = new Chart(cc, {
+        type: 'doughnut',
+        data: {
+          labels: ['Madrid','Barcelona','Marbella','Valencia','Otros'],
+          datasets: [{ data: [42,28,15,10,5], backgroundColor: ['#1C3A2F','#2E5E4A','#C9A96E','#DFC090','#E2DDD6'] }]
+        },
+        options: { ...chartDefaults, plugins: { legend: { display: true, position: 'bottom' } } }
+      });
+    }
+
+    // Top props
+    const tp = document.getElementById('top-props-chart');
+    if (tp && !tp._chart) {
+      tp._chart = new Chart(tp, {
+        type: 'bar', indexAxis: 'y',
+        data: {
+          labels: (typeof properties !== 'undefined' ? properties.slice(0,5) : []).map(p => localText(p.title).slice(0,25) + '…'),
+          datasets: [{ data: (typeof properties !== 'undefined' ? properties.slice(0,5) : []).map(p => p.visits||0), backgroundColor: '#C9A96E', borderRadius: 4 }]
+        },
+        options: { ...chartDefaults, scales: { x: { beginAtZero: true }, y: { grid: { display: false } } } }
+      });
+    }
+
+    // Type
+    const tyc = document.getElementById('type-chart');
+    if (tyc && !tyc._chart) {
+      tyc._chart = new Chart(tyc, {
+        type: 'pie',
+        data: {
+          labels: ['Venta','Alquiler'],
+          datasets: [{ data: [72,28], backgroundColor: ['#1C3A2F','#C9A96E'] }]
+        },
+        options: { ...chartDefaults, plugins: { legend: { display: true, position: 'bottom' } } }
+      });
+    }
+  }
+
+  // Init
+  document.addEventListener('DOMContentLoaded', () => {
+    renderAdminProps();
+    setTimeout(() => {
+      const vc = document.getElementById('visits-chart');
+      if (vc) renderStatCharts();
+    }, 100);
+  });
+</script>
+</body>
+</html>
