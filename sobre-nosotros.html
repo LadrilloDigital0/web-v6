@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sobre nosotros — Inmobiliaria Prueba</title>
+  <meta name="description" content="Conoce al equipo de Inmobiliaria Prueba. Expertos en propiedades exclusivas con más de 15 años de experiencia en el mercado inmobiliario de lujo.">
+  <link rel="canonical" href="https://www.inmobiliariaprueba.es/sobre-nosotros.html">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Inmobiliaria Prueba">
+  <meta property="og:title" content="Sobre nosotros — Inmobiliaria Prueba">
+  <meta property="og:description" content="Conoce al equipo de Inmobiliaria Prueba. Expertos en propiedades exclusivas con más de 15 años de experiencia.">
+  <meta property="og:url" content="https://www.inmobiliariaprueba.es/sobre-nosotros.html">
+  <meta property="og:image" content="https://www.inmobiliariaprueba.es/images/og-about.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sobre nosotros — Inmobiliaria Prueba">
+  <meta name="twitter:description" content="Conoce al equipo de Inmobiliaria Prueba. Expertos en propiedades exclusivas con más de 15 años de experiencia.">
+  <meta name="twitter:image" content="https://www.inmobiliariaprueba.es/images/og-about.jpg">
+  <meta name="theme-color" content="#1C3A2F">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preload" as="image" href="https://picsum.photos/seed/about-hero/1920/800" fetchpriority="high">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="tailwind-config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-mobile.css">
+</head>
+<body class="font-body bg-bg text-text">
+
+<!-- ===== DESKTOP HEADER ===== -->
+<header id="main-header" class="header transparent d-only">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <a href="index.html" class="flex-shrink-0">
+      <span class="logo-text">Inmobiliaria Prueba</span>
+      <span class="logo-sub">Propiedades exclusivas</span>
+    </a>
+    <nav class="hidden lg:flex items-center gap-8">
+      <a href="index.html" class="nav-link" data-i18n="home">Inicio</a>
+      <a href="listado.html" class="nav-link" data-i18n="listings">Propiedades</a>
+      <a href="sobre-nosotros.html" class="nav-link active" data-i18n="about">Sobre nosotros</a>
+      <a href="contacto.html" class="nav-link" data-i18n="contact2">Contacto</a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <div class="relative group">
+        <button class="flex items-center gap-1.5 text-sm text-white/80 hover:text-white font-body px-2 py-1 rounded" aria-label="Idioma">
+          <span id="lang-flag">🇪🇸</span>
+          <span id="lang-code" class="text-xs uppercase tracking-wider">ES</span>
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+        </button>
+        <div class="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-border py-1.5 min-w-[130px] opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-50">
+          <button class="lang-option w-full flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-bg" data-lang="es">🇪🇸 <span>Español</span></button>
+          <button class="lang-option w-full flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-bg" data-lang="en">🇬🇧 <span>English</span></button>
+          <button class="lang-option w-full flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-bg" data-lang="de">🇩🇪 <span>Deutsch</span></button>
+          <button class="lang-option w-full flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-bg" data-lang="fr">🇫🇷 <span>Français</span></button>
+        </div>
+      </div>
+      <div class="relative group">
+        <button class="flex items-center gap-1 text-sm text-white/80 hover:text-white font-body px-2 py-1 rounded" aria-label="Moneda">
+          <span id="curr-symbol">€</span>
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/></svg>
+        </button>
+        <div class="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl border border-border py-1.5 min-w-[120px] opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity z-50">
+          <button class="currency-option w-full flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-bg" data-currency="EUR">€ EUR</button>
+          <button class="currency-option w-full flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-bg" data-currency="USD">$ USD</button>
+          <button class="currency-option w-full flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-bg" data-currency="GBP">£ GBP</button>
+          <button class="currency-option w-full flex items-center gap-2 px-4 py-2 text-sm text-text hover:bg-bg" data-currency="CHF">CHF</button>
+        </div>
+      </div>
+      <button id="login-btn" class="btn btn-primary btn-sm" data-i18n="login">Iniciar sesión</button>
+      <div id="user-menu" style="display:none" class="flex items-center gap-2">
+        <span class="text-white/80 text-sm" id="user-name"></span>
+        <button id="logout-btn" class="text-white/60 hover:text-white text-xs underline" data-i18n="logout">Cerrar sesión</button>
+      </div>
+      <button id="mobile-menu-toggle" class="lg:hidden text-white ml-2" aria-label="Menu" aria-expanded="false">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Desktop hamburger overlay (tablet widths 768–1023px) -->
+<div id="mobile-menu" class="fixed inset-0 z-[999] bg-brand-dark lg:hidden d-only" style="display:none; opacity:0; transition:opacity 0.3s;">
+  <div class="flex flex-col h-full p-6 pt-20">
+    <button class="absolute top-6 right-6 text-white text-2xl" onclick="document.getElementById('mobile-menu').style.opacity='0';setTimeout(()=>{document.getElementById('mobile-menu').style.display='none'},300);document.body.style.overflow=''">✕</button>
+    <a href="index.html" class="text-2xl font-display text-white py-4 border-b border-white/10" data-i18n="home">Inicio</a>
+    <a href="listado.html" class="text-2xl font-display text-white py-4 border-b border-white/10" data-i18n="listings">Propiedades</a>
+    <a href="sobre-nosotros.html" class="text-2xl font-display text-accent py-4 border-b border-white/10" data-i18n="about">Sobre nosotros</a>
+    <a href="contacto.html" class="text-2xl font-display text-white py-4" data-i18n="contact2">Contacto</a>
+  </div>
+</div>
+
+<!-- ===== MOBILE HEADER ===== -->
+<header class="m-header m-only">
+  <a href="index.html" class="m-logo">Inmobiliaria Prueba</a>
+  <div class="m-header-actions">
+    <a href="contacto.html" class="m-icon-btn" aria-label="Contacto">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+    </a>
+  </div>
+</header>
+
+<!-- ===== DESKTOP HERO ===== -->
+<section class="hero d-only" style="min-height:70vh;">
+  <div class="hero-bg loaded" style="background-image:url('https://picsum.photos/seed/about-hero/1920/800');"></div>
+  <div class="hero-overlay"></div>
+  <div class="relative z-10 max-w-4xl mx-auto px-6 text-center pt-32 pb-20">
+    <p class="section-tag mb-4 animate-fade delay-1">Desde 1998</p>
+    <h1 class="font-display text-5xl md:text-7xl font-light text-white mb-6 animate-fade-up delay-1" style="letter-spacing:-0.03em;">
+      Sobre <em class="italic text-accent">nosotros</em>
+    </h1>
+    <p class="text-white/75 text-xl animate-fade-up delay-2 max-w-2xl mx-auto" style="line-height:1.7;">
+      Más de 25 años construyendo sueños, creando hogares y estableciendo relaciones de confianza con nuestros clientes.
+    </p>
+  </div>
+</section>
+
+<!-- ===== MOBILE HERO ===== -->
+<section class="m-only" style="position:relative;height:260px;overflow:hidden;">
+  <img src="https://picsum.photos/seed/about-hero/800/600" alt="Nuestra oficina" loading="eager" width="800" height="600" style="width:100%;height:100%;object-fit:cover;">
+  <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(18,38,25,0.85) 30%,rgba(18,38,25,0.3) 100%);"></div>
+  <div style="position:absolute;bottom:20px;left:16px;right:16px;">
+    <span class="m-hero-tag">Desde 1998</span>
+    <h1 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:2.2rem;font-weight:300;color:#fff;letter-spacing:-0.03em;line-height:1.1;">
+      Sobre <em style="color:var(--accent);">nosotros</em>
+    </h1>
+  </div>
+</section>
+
+<!-- ===== DESKTOP STORY ===== -->
+<section class="py-24 px-6 d-only">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div class="reveal">
+      <p class="section-tag mb-4">Nuestra historia</p>
+      <h2 class="font-display text-4xl md:text-5xl font-light mb-8" style="letter-spacing:-0.03em;">
+        Una historia de<br><em class="italic text-brand">pasión y confianza</em>
+      </h2>
+      <div class="space-y-4 text-muted leading-relaxed" style="line-height:1.8;">
+        <p>Inmobiliaria Prueba nació en 1998 con una visión clara: transformar la experiencia de compra y venta de propiedades en España. Fundada por María García en el corazón de Madrid, nuestra empresa ha crecido hasta convertirse en una de las inmobiliarias de referencia en el mercado premium nacional.</p>
+        <p>A lo largo de más de dos décadas, hemos facilitado miles de operaciones inmobiliarias, siempre con la misma filosofía: el cliente primero, la calidad siempre y la confianza como base de toda relación.</p>
+        <p>Hoy contamos con un equipo de 45 profesionales especializados y presencia en las principales ciudades españolas, atendiendo también a una creciente cartera de clientes internacionales.</p>
+      </div>
+    </div>
+    <div class="reveal delay-2">
+      <div class="relative">
+        <img src="https://picsum.photos/seed/office-team/800/600" alt="Nuestra oficina" loading="lazy" width="800" height="600" class="w-full rounded-2xl object-cover shadow-2xl" style="height:460px;">
+        <div class="absolute -bottom-6 -left-6 bg-brand text-white rounded-xl p-5 shadow-xl">
+          <p class="font-display text-4xl text-accent font-light">25+</p>
+          <p class="text-white/70 text-sm">Años de experiencia</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOBILE INTRO + STATS ===== -->
+<section class="m-section m-only" style="background:#fff;">
+  <p style="color:var(--muted);font-size:0.9rem;line-height:1.75;">
+    Más de 25 años construyendo sueños, creando hogares y estableciendo relaciones de confianza con nuestros clientes. Somos especialistas en el mercado inmobiliario premium de España.
+  </p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
+    <div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:300;color:var(--accent);">+1.200</div>
+      <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);">Propiedades</div>
+    </div>
+    <div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:300;color:var(--accent);">25+</div>
+      <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);">Años</div>
+    </div>
+    <div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:300;color:var(--accent);">4.9★</div>
+      <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);">Valoración</div>
+    </div>
+    <div style="background:var(--bg);border-radius:12px;padding:14px;text-align:center;">
+      <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;font-weight:300;color:var(--accent);">12</div>
+      <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);">Ciudades</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DESKTOP STATS ===== -->
+<section class="py-16 bg-brand d-only">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="text-center reveal">
+        <p class="font-display text-5xl font-light text-accent mb-2">3.500+</p>
+        <p class="text-white/60 text-sm uppercase tracking-wider">Propiedades vendidas</p>
+      </div>
+      <div class="text-center reveal delay-1">
+        <p class="font-display text-5xl font-light text-accent mb-2">12.000+</p>
+        <p class="text-white/60 text-sm uppercase tracking-wider">Clientes satisfechos</p>
+      </div>
+      <div class="text-center reveal delay-2">
+        <p class="font-display text-5xl font-light text-accent mb-2">12</p>
+        <p class="text-white/60 text-sm uppercase tracking-wider">Países de clientes</p>
+      </div>
+      <div class="text-center reveal delay-3">
+        <p class="font-display text-5xl font-light text-accent mb-2">4.9★</p>
+        <p class="text-white/60 text-sm uppercase tracking-wider">Valoración media</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOBILE HISTORIA (TIMELINE) ===== -->
+<section class="m-section m-only">
+  <span class="m-section-tag">Historia</span>
+  <h2 class="m-section-title">Nuestra<br><em>trayectoria</em></h2>
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <div style="display:flex;gap:14px;">
+      <div style="flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:0.8rem;color:var(--accent);font-weight:500;">98</span>
+      </div>
+      <div style="padding-top:6px;">
+        <p style="font-weight:600;font-size:0.9rem;margin-bottom:3px;">Fundación en Madrid</p>
+        <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;">Abrimos nuestra primera oficina con el objetivo de ofrecer un servicio personalizado en el mercado premium.</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;">
+      <div style="flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:0.8rem;color:var(--accent);font-weight:500;">07</span>
+      </div>
+      <div style="padding-top:6px;">
+        <p style="font-weight:600;font-size:0.9rem;margin-bottom:3px;">Expansión nacional</p>
+        <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;">Abrimos oficinas en Barcelona, Marbella y Valencia, consolidándonos como referente nacional.</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;">
+      <div style="flex:0 0 auto;width:40px;height:40px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;">
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:0.8rem;color:var(--accent);font-weight:500;">20</span>
+      </div>
+      <div style="padding-top:6px;">
+        <p style="font-weight:600;font-size:0.9rem;margin-bottom:3px;">Transformación digital</p>
+        <p style="font-size:0.82rem;color:var(--muted);line-height:1.6;">Lanzamos nuestra plataforma digital con tours virtuales, valoración IA y herramientas avanzadas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DESKTOP TEAM ===== -->
+<section class="py-24 px-6 bg-white d-only">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-tag mb-3">Las personas</p>
+      <h2 class="font-display text-4xl md:text-5xl font-light" style="letter-spacing:-0.03em;">Nuestro equipo</h2>
+      <p class="text-muted mt-4 max-w-lg mx-auto">Profesionales apasionados con años de experiencia en el mercado inmobiliario premium.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="team-grid"></div>
+  </div>
+</section>
+
+<!-- ===== MOBILE TEAM ===== -->
+<section class="m-section m-only" style="background:#fff;">
+  <span class="m-section-tag">El equipo</span>
+  <h2 class="m-section-title">Nuestros<br><em>expertos</em></h2>
+  <div id="m_team-grid" class="m-team-grid"></div>
+</section>
+
+<!-- ===== DESKTOP VALUES ===== -->
+<section class="py-24 px-6 d-only">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 reveal">
+      <p class="section-tag mb-3">Lo que nos guía</p>
+      <h2 class="font-display text-4xl md:text-5xl font-light" style="letter-spacing:-0.03em;">Nuestros valores</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl border border-border p-8 reveal">
+        <div class="w-12 h-12 bg-brand/10 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        </div>
+        <h3 class="font-display text-xl mb-2">Integridad</h3>
+        <p class="text-muted text-sm leading-relaxed">Actuamos siempre con honestidad y transparencia en cada operación, poniendo el interés de nuestros clientes por encima de todo.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-border p-8 reveal delay-1">
+        <div class="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-accent-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+        </div>
+        <h3 class="font-display text-xl mb-2">Excelencia</h3>
+        <p class="text-muted text-sm leading-relaxed">No nos conformamos con el estándar. Buscamos la excelencia en cada detalle, desde la presentación de las propiedades hasta el servicio postventa.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-border p-8 reveal delay-2">
+        <div class="w-12 h-12 bg-brand/10 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <h3 class="font-display text-xl mb-2">Personas primero</h3>
+        <p class="text-muted text-sm leading-relaxed">Detrás de cada transacción hay una familia, un sueño, una vida. Tratamos cada caso con la atención personalizada que merece.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-border p-8 reveal delay-3">
+        <div class="w-12 h-12 bg-accent/20 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-accent-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <h3 class="font-display text-xl mb-2">Innovación</h3>
+        <p class="text-muted text-sm leading-relaxed">Adoptamos la tecnología para ofrecer tours virtuales, valoraciones con IA y herramientas digitales que agilizan el proceso de compra.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-border p-8 reveal delay-4">
+        <div class="w-12 h-12 bg-brand/10 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="font-display text-xl mb-2">Visión global</h3>
+        <p class="text-muted text-sm leading-relaxed">Con clientes en más de 12 países, entendemos las necesidades de un mercado global y ofrecemos asesoramiento internacional.</p>
+      </div>
+      <div class="bg-white rounded-2xl border border-border p-8 reveal delay-5">
+        <div class="w-12 h-12 bg-brand/10 rounded-xl flex items-center justify-center mb-5">
+          <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+        </div>
+        <h3 class="font-display text-xl mb-2">Pasión</h3>
+        <p class="text-muted text-sm leading-relaxed">Lo que hacemos no es solo un trabajo. Es nuestra vocación. Amamos el mundo inmobiliario y eso se nota en cada detalle de nuestro servicio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOBILE VALORES ===== -->
+<section class="m-section m-only" style="background:var(--brand);padding-top:28px;padding-bottom:28px;">
+  <span class="m-section-tag" style="color:var(--accent);">Lo que nos define</span>
+  <h2 class="m-section-title on-dark" style="color:#fff;">Nuestros<br><em style="color:var(--accent);">valores</em></h2>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="flex:0 0 36px;height:36px;border-radius:8px;background:rgba(201,169,110,0.2);display:flex;align-items:center;justify-content:center;">
+        <svg fill="none" stroke="var(--accent)" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      </div>
+      <div>
+        <p style="font-weight:600;font-size:0.9rem;color:#fff;margin-bottom:2px;">Integridad</p>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.6;">Actuamos con transparencia y honestidad en cada operación.</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="flex:0 0 36px;height:36px;border-radius:8px;background:rgba(201,169,110,0.2);display:flex;align-items:center;justify-content:center;">
+        <svg fill="none" stroke="var(--accent)" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+      </div>
+      <div>
+        <p style="font-weight:600;font-size:0.9rem;color:#fff;margin-bottom:2px;">Compromiso</p>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.6;">Tu satisfacción es nuestra prioridad en todo momento.</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div style="flex:0 0 36px;height:36px;border-radius:8px;background:rgba(201,169,110,0.2);display:flex;align-items:center;justify-content:center;">
+        <svg fill="none" stroke="var(--accent)" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <div>
+        <p style="font-weight:600;font-size:0.9rem;color:#fff;margin-bottom:2px;">Innovación</p>
+        <p style="font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.6;">Tecnología de vanguardia para ofrecerte la mejor experiencia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOBILE TESTIMONIOS ===== -->
+<section class="m-section m-only" style="background:var(--bg);">
+  <span class="m-section-tag">Lo que dicen</span>
+  <h2 class="m-section-title">Testimonios<br><em>de clientes</em></h2>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div style="background:#fff;border-radius:14px;padding:16px;border:1px solid var(--border);">
+      <div style="display:flex;gap:3px;margin-bottom:8px;"><span style="color:var(--accent);">★★★★★</span></div>
+      <p style="font-size:0.88rem;line-height:1.7;color:#444;margin-bottom:10px;font-style:italic;">"Encontramos el piso de nuestros sueños en Madrid gracias al equipo. Profesionales, cercanos y muy eficientes."</p>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:0.85rem;font-weight:600;">A</div>
+        <div>
+          <p style="font-size:0.82rem;font-weight:600;">Ana García</p>
+          <p style="font-size:0.72rem;color:var(--muted);">Madrid, 2024</p>
+        </div>
+      </div>
+    </div>
+    <div style="background:#fff;border-radius:14px;padding:16px;border:1px solid var(--border);">
+      <div style="display:flex;gap:3px;margin-bottom:8px;"><span style="color:var(--accent);">★★★★★</span></div>
+      <p style="font-size:0.88rem;line-height:1.7;color:#444;margin-bottom:10px;font-style:italic;">"El proceso de compra fue fluido y transparente. Recomendaría Inmobiliaria Prueba sin dudarlo."</p>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:32px;height:32px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:0.85rem;font-weight:600;">J</div>
+        <div>
+          <p style="font-size:0.82rem;font-weight:600;">Javier Martín</p>
+          <p style="font-size:0.72rem;color:var(--muted);">Barcelona, 2024</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DESKTOP CTA ===== -->
+<section class="py-24 px-6 bg-bg d-only">
+  <div class="max-w-4xl mx-auto text-center reveal">
+    <p class="section-tag mb-4">Estamos aquí para ayudarte</p>
+    <h2 class="font-display text-4xl md:text-6xl font-light mb-6" style="letter-spacing:-0.03em;">
+      ¿Listo para encontrar<br><em class="italic text-brand">tu hogar ideal?</em>
+    </h2>
+    <p class="text-muted text-lg mb-10 max-w-xl mx-auto" style="line-height:1.7;">
+      Nuestros asesores especializados están disponibles para ayudarte a encontrar tu propiedad perfecta.
+    </p>
+    <div class="flex flex-wrap gap-4 justify-center">
+      <a href="listado.html" class="btn btn-brand btn-lg">Ver propiedades</a>
+      <a href="contacto.html" class="btn btn-outline btn-lg" data-i18n="contact2">Contactar</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MOBILE CTA ===== -->
+<section class="m-cta m-only">
+  <span class="m-section-tag">Trabaja con nosotros</span>
+  <h2 class="m-section-title">¿Hablamos<br><em>de tu proyecto?</em></h2>
+  <div style="display:flex;flex-direction:column;gap:10px;">
+    <a href="contacto.html" class="m-btn-primary">Contactar con el equipo</a>
+    <a href="listado.html" class="m-btn-outline">Ver propiedades</a>
+  </div>
+</section>
+
+<!-- ===== DESKTOP FOOTER ===== -->
+<footer class="footer py-16 px-6 d-only">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+      <div class="col-span-1 md:col-span-1">
+        <div class="logo-text text-2xl mb-2">Inmobiliaria Prueba</div>
+        <p class="text-white/40 text-sm leading-relaxed mt-3" data-i18n="footerTagline">Tu hogar ideal, nuestra pasión.</p>
+        <div class="flex gap-3 mt-6">
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-accent hover:text-brand-dark text-sm transition-colors">f</a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-accent hover:text-brand-dark text-sm transition-colors">in</a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-accent hover:text-brand-dark text-sm transition-colors">ig</a>
+          <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white/60 hover:bg-accent hover:text-brand-dark text-sm transition-colors">yt</a>
+        </div>
+      </div>
+      <div>
+        <h4 class="text-white text-sm font-semibold uppercase tracking-wider mb-4">Propiedades</h4>
+        <ul class="space-y-2">
+          <li><a href="listado.html?tipo=piso" class="footer-link">Pisos</a></li>
+          <li><a href="listado.html?tipo=casa" class="footer-link">Casas</a></li>
+          <li><a href="listado.html?tipo=villa" class="footer-link">Villas</a></li>
+          <li><a href="listado.html?operacion=alquiler" class="footer-link">Alquiler</a></li>
+          <li><a href="listado.html?destacados=true" class="footer-link">Destacadas</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white text-sm font-semibold uppercase tracking-wider mb-4">Empresa</h4>
+        <ul class="space-y-2">
+          <li><a href="sobre-nosotros.html" class="footer-link">Sobre nosotros</a></li>
+          <li><a href="contacto.html" class="footer-link">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white text-sm font-semibold uppercase tracking-wider mb-4">Newsletter</h4>
+        <p class="text-white/50 text-sm mb-4" data-i18n="newsletter">Suscríbete para recibir las mejores ofertas</p>
+        <div class="flex gap-2">
+          <input type="email" placeholder="tu@email.com" class="flex-1 px-4 py-2.5 bg-white/10 border border-white/20 rounded text-white text-sm outline-none focus:border-accent placeholder-white/30">
+          <button class="btn btn-primary btn-sm" data-i18n="subscribeBtn">OK</button>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-white/30 text-xs">© 2025 Inmobiliaria Prueba. Todos los derechos reservados.</p>
+      <div class="flex gap-6">
+        <a href="#" class="footer-link text-xs">Aviso legal</a>
+        <a href="#" class="footer-link text-xs">Privacidad</a>
+        <a href="#" class="footer-link text-xs">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== MOBILE FOOTER ===== -->
+<footer class="m-footer m-only">
+  <div class="m-footer-logo">Inmobiliaria Prueba</div>
+  <div class="m-footer-tagline">Tu hogar ideal, nuestra pasión.</div>
+  <div class="m-footer-links">
+    <a href="index.html" class="m-footer-link">Inicio</a>
+    <a href="listado.html" class="m-footer-link">Propiedades</a>
+    <a href="contacto.html" class="m-footer-link">Contacto</a>
+    <a href="#" class="m-footer-link">Privacidad</a>
+  </div>
+  <div class="m-footer-copy">© 2025 Inmobiliaria Prueba.</div>
+</footer>
+
+<!-- ===== AUTH MODAL (shared) ===== -->
+<div id="auth-modal" class="modal-overlay">
+  <div class="modal-card">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="font-display text-2xl font-light text-brand">Accede a tu cuenta</h2>
+      <button onclick="closeModal('auth-modal')" class="text-muted hover:text-text text-2xl">×</button>
+    </div>
+    <div class="flex gap-4 mb-6 border-b border-border">
+      <button data-auth-tab="login" class="pb-3 text-sm font-medium text-brand border-b-2 border-brand -mb-px" data-i18n="login">Iniciar sesión</button>
+      <button data-auth-tab="register" class="pb-3 text-sm font-medium text-muted hover:text-text" data-i18n="register">Registrarse</button>
+    </div>
+    <div class="auth-tab-content" data-tab="login">
+      <form id="login-form" class="space-y-4">
+        <div class="field"><label data-i18n="email">Email</label><input name="email" type="email" placeholder="tu@email.com"></div>
+        <div class="field"><label data-i18n="password">Contraseña</label><input name="password" type="password" placeholder="••••••••"></div>
+        <button type="submit" class="btn btn-brand w-full justify-center" data-i18n="login">Iniciar sesión</button>
+      </form>
+    </div>
+    <div class="auth-tab-content" data-tab="register" style="display:none;">
+      <form id="register-form" class="space-y-4">
+        <div class="field"><label data-i18n="name">Nombre</label><input name="name" type="text"></div>
+        <div class="field"><label data-i18n="email">Email</label><input name="email" type="email"></div>
+        <div class="field"><label data-i18n="password">Contraseña</label><input name="password" type="password"></div>
+        <button type="submit" class="btn btn-brand w-full justify-center" data-i18n="register">Crear cuenta</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHAT (desktop only) ===== -->
+<div class="chat-widget d-only">
+  <div id="chat-panel" class="chat-panel">
+    <div class="chat-header">
+      <div class="w-8 h-8 rounded-full bg-accent/30 flex items-center justify-center text-accent text-sm">IP</div>
+      <div>
+        <p class="font-semibold text-sm">Asistente Inmobiliaria</p>
+        <p class="text-white/60 text-xs flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span> En línea</p>
+      </div>
+      <button onclick="document.getElementById('chat-panel').classList.remove('open')" class="ml-auto text-white/60 hover:text-white">×</button>
+    </div>
+    <div id="chat-messages" class="chat-messages">
+      <div class="chat-msg bot">¡Hola! ¿Tienes alguna pregunta sobre nuestro equipo o servicios?</div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="chat-input-field" placeholder="Escribe tu mensaje...">
+      <button id="chat-send">➤</button>
+    </div>
+  </div>
+  <button id="chat-toggle" class="chat-toggle" title="Chat en vivo">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+  </button>
+</div>
+
+<!-- ===== MOBILE BOTTOM NAV ===== -->
+<nav class="m-bottom-nav m-only">
+  <a href="index.html" class="m-nav-item">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    Inicio
+  </a>
+  <a href="listado.html" class="m-nav-item">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    Buscar
+  </a>
+  <a href="listado.html#favoritos" class="m-nav-item">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+    Favoritos
+  </a>
+  <a href="sobre-nosotros.html" class="m-nav-item active">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    Nosotros
+  </a>
+  <a href="contacto.html" class="m-nav-item">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+    Contacto
+  </a>
+</nav>
+
+<script src="properties.js"></script>
+<script src="main.js"></script>
+<script>
+  initHeader('transparent');
+
+  // Desktop lang/currency sync
+  document.querySelectorAll('.lang-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const flags = { es:'🇪🇸', en:'🇬🇧', de:'🇩🇪', fr:'🇫🇷' };
+      document.getElementById('lang-flag').textContent = flags[btn.dataset.lang] || '🌐';
+      document.getElementById('lang-code').textContent = btn.dataset.lang.toUpperCase();
+    });
+  });
+  document.querySelectorAll('.currency-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const symbols = { EUR:'€', USD:'$', GBP:'£', CHF:'CHF' };
+      document.getElementById('curr-symbol').textContent = symbols[btn.dataset.currency] || btn.dataset.currency;
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Desktop team grid
+    const desktopGrid = document.getElementById('team-grid');
+    if (desktopGrid && typeof agents !== 'undefined') {
+      desktopGrid.innerHTML = agents.map((agent, i) => `
+        <div class="reveal ${i > 0 ? 'delay-' + i : ''} text-center">
+          <div class="relative inline-block mb-5">
+            <img src="${agent.photo}" alt="${agent.name}" loading="lazy" width="160" height="160" class="w-40 h-40 rounded-full object-cover mx-auto border-4 border-white shadow-xl">
+            <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-accent text-brand-dark text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
+              ${localText(agent.role)}
+            </div>
+          </div>
+          <h3 class="font-display text-2xl font-medium mt-4 mb-1">${agent.name}</h3>
+          <p class="text-muted text-sm mb-4">${localText(agent.bio)}</p>
+          <div class="flex justify-center gap-3">
+            <a href="tel:${agent.phone}" class="btn btn-outline btn-sm gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              Llamar
+            </a>
+            <a href="mailto:${agent.email}" class="btn btn-brand btn-sm gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              Email
+            </a>
+          </div>
+        </div>`).join('');
+    }
+
+    // Mobile team grid
+    const mobileGrid = document.getElementById('m_team-grid');
+    if (mobileGrid && typeof agents !== 'undefined') {
+      mobileGrid.innerHTML = agents.slice(0, 6).map(agent => `
+        <div class="m-team-card">
+          <img src="${agent.photo}" alt="${agent.name}" loading="lazy" width="160" height="140" class="m-team-photo">
+          <div style="padding:10px 10px 0;">
+            <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;font-weight:500;">${agent.name}</p>
+            <p style="font-size:0.72rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:0.04em;">${localText(agent.role)}</p>
+          </div>
+        </div>`).join('');
+    }
+
+    initScrollReveal();
+  });
+</script>
+</body>
+</html>
