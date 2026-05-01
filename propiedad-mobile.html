@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Propiedad — Inmobiliaria Prueba</title>
+  <meta name="description" content="Propiedad exclusiva en venta. Inmobiliaria Prueba.">
+  <meta name="theme-color" content="#1C3A2F">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <script src="tailwind-config.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Swiper -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style-mobile.css">
+  <style>
+    #prop-map { height: 250px; }
+    .price-chart-container { height: 160px; }
+    .swiper { width: 100%; }
+    .swiper-slide img { width: 100%; height: 270px; object-fit: cover; }
+    .thumb-strip .swiper-slide img { height: 52px; border-radius: 4px; }
+    /* Override body padding for property page (no bottom nav overlap) */
+    body { padding-bottom: calc(var(--bottom-nav-h) + 72px); }
+  </style>
+</head>
+<body class="font-body bg-bg text-text">
+
+<!-- ===== TOP HEADER ===== -->
+<header class="m-header light" style="background:transparent;position:absolute;border:none;box-shadow:none;">
+  <a href="listado-mobile.html" class="m-icon-btn" style="background:rgba(0,0,0,0.4);" aria-label="Volver">
+    <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+  </a>
+  <div class="m-header-actions">
+    <button id="prop-fav-btn" class="m-icon-btn fav-btn" style="background:rgba(0,0,0,0.4);" aria-label="Favorito">
+      <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+    </button>
+    <button onclick="shareProperty()" class="m-icon-btn" style="background:rgba(0,0,0,0.4);" aria-label="Compartir">
+      <svg fill="none" stroke="white" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- ===== GALLERY (full-width) ===== -->
+<div style="padding-top:0;">
+  <div class="swiper gallery-main" id="m-gallery">
+    <div class="swiper-wrapper" id="swiper-wrapper-main"></div>
+    <div class="swiper-pagination"></div>
+    <!-- Photo counter -->
+    <div id="photo-counter" style="position:absolute;bottom:12px;right:12px;background:rgba(0,0,0,0.5);color:#fff;font-size:0.75rem;padding:3px 10px;border-radius:20px;z-index:10;"></div>
+  </div>
+  <!-- Thumbnails strip -->
+  <div style="padding:8px 16px;background:#fff;border-bottom:1px solid var(--border);">
+    <div class="swiper thumb-strip" id="m-thumbs" style="height:52px;">
+      <div class="swiper-wrapper" id="swiper-wrapper-thumb"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROPERTY DETAIL ===== -->
+<div class="m-prop-detail-body">
+
+  <!-- Badges + title -->
+  <div style="padding-top:16px;">
+    <div style="display:flex;gap:6px;margin-bottom:8px;">
+      <span id="prop-type-badge" class="badge"></span>
+      <span id="prop-cert-badge" style="font-size:0.65rem;padding:3px 8px;background:rgba(28,58,47,0.08);color:var(--brand);border-radius:4px;font-weight:500;"></span>
+      <span id="prop-visits" style="font-size:0.7rem;color:var(--muted);display:flex;align-items:center;gap:3px;"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;stroke-width:2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg></span>
+    </div>
+    <div class="m-prop-detail-price prop-price" id="prop-price-top"></div>
+    <h1 class="m-prop-detail-title" id="prop-title"></h1>
+    <div class="m-prop-address" id="prop-address" style="font-size:0.85rem;"></div>
+  </div>
+
+  <!-- Specs bar -->
+  <div class="m-prop-specs" id="prop-features-bar"></div>
+
+  <!-- Description -->
+  <p id="prop-description" style="font-size:0.9rem;line-height:1.75;color:#444;margin-bottom:0;"></p>
+
+  <!-- Features table -->
+  <div class="m-prop-section-title">Características</div>
+  <div id="prop-features" style="border-radius:12px;background:#fff;border:1px solid var(--border);overflow:hidden;">
+    <!-- Renderizado por JS -->
+  </div>
+
+  <!-- Agent card -->
+  <div id="agent-card" style="margin-top:16px;"></div>
+
+  <!-- Map -->
+  <div class="m-prop-section-title">Ubicación</div>
+  <div id="prop-map" style="border-radius:14px;overflow:hidden;"></div>
+
+  <!-- Mortgage calculator -->
+  <div class="m-prop-section-title">Calculadora hipotecaria</div>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;">
+    <div class="mort-param" style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <label style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Entrada</label>
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;color:var(--brand);font-weight:500;" id="mort-down-val">20%</span>
+      </div>
+      <input type="range" id="mort-down" min="5" max="80" value="20" class="mort-slider">
+      <div class="mort-track-labels"><span>5%</span><span>80%</span></div>
+    </div>
+    <div class="mort-param" style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <label style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Plazo</label>
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;color:var(--brand);font-weight:500;" id="mort-years-val">25 años</span>
+      </div>
+      <input type="range" id="mort-years" min="5" max="40" value="25" class="mort-slider">
+      <div class="mort-track-labels"><span>5 años</span><span>40 años</span></div>
+    </div>
+    <div class="mort-param" style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+        <label style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);">Tipo interés</label>
+        <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1rem;color:var(--brand);font-weight:500;" id="mort-rate-val">3.5%</span>
+      </div>
+      <input type="range" id="mort-rate" min="1" max="8" step="0.1" value="3.5" class="mort-slider">
+      <div class="mort-track-labels"><span>1%</span><span>8%</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:10px;padding:14px;text-align:center;">
+      <p style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:4px;">Cuota mensual estimada</p>
+      <p id="mort-monthly" style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.8rem;color:var(--brand);font-weight:300;letter-spacing:-0.02em;">—</p>
+      <p id="mort-total" style="font-size:0.75rem;color:var(--muted);margin-top:2px;"></p>
+    </div>
+  </div>
+
+  <!-- Similar properties -->
+  <div class="m-prop-section-title">Propiedades similares</div>
+  <div id="similar-props"></div>
+
+  <!-- Price chart -->
+  <div class="m-prop-section-title">Evolución de precio</div>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:14px;padding:14px;">
+    <div class="price-chart-container"><canvas id="price-chart"></canvas></div>
+  </div>
+
+</div>
+
+<!-- ===== STICKY CTA ===== -->
+<div class="m-prop-sticky-cta">
+  <button onclick="openScheduleVisit()" class="m-btn-primary">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+    Agendar visita
+  </button>
+  <a href="contacto-mobile.html" class="m-btn-outline" style="flex:0 0 auto;padding:14px 16px;">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:18px;height:18px;stroke-width:1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+  </a>
+</div>
+
+<!-- ===== SCHEDULE VISIT MODAL ===== -->
+<div id="schedule-modal" class="modal-overlay">
+  <div class="modal-card" style="margin:16px;border-radius:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h2 style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.3rem;font-weight:400;color:var(--brand);">Agendar visita</h2>
+      <button onclick="closeModal('schedule-modal')" style="font-size:1.5rem;color:var(--muted);background:none;border:none;">×</button>
+    </div>
+    <form id="schedule-form" class="space-y-4" onsubmit="handleScheduleSubmit(event)">
+      <div class="field"><label>Nombre</label><input name="name" type="text" required placeholder="Tu nombre"></div>
+      <div class="field"><label>Teléfono</label><input name="phone" type="tel" required placeholder="+34 600 000 000"></div>
+      <div class="field"><label>Email</label><input name="email" type="email" placeholder="tu@email.com"></div>
+      <div class="field"><label>Fecha preferida</label><input name="date" type="date"></div>
+      <button type="submit" class="m-btn-primary" style="width:100%;">Confirmar visita</button>
+    </form>
+  </div>
+</div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="m-bottom-nav">
+  <a href="index-mobile.html" class="m-nav-item">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+    Inicio
+  </a>
+  <a href="listado-mobile.html" class="m-nav-item active">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    Buscar
+  </a>
+  <a href="listado-mobile.html#favoritos" class="m-nav-item">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+    Favoritos
+  </a>
+  <a href="sobre-nosotros-mobile.html" class="m-nav-item">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    Nosotros
+  </a>
+  <a href="contacto-mobile.html" class="m-nav-item">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+    Contacto
+  </a>
+</nav>
+
+<script src="properties.js"></script>
+<script src="main.js"></script>
+<script src="propiedad.js"></script>
+<script>
+  // Patch: render similar properties with mobile links
+  const _renderSimilar = renderSimilarProperties;
+  function renderSimilarProperties() {
+    const container = document.getElementById('similar-props');
+    if (!container || !property) return;
+    const similar = properties.filter(p => p.id !== property.id && p.type === property.type)
+      .sort((a,b) => Math.abs(a.price - property.price) - Math.abs(b.price - property.price))
+      .slice(0, 3);
+    container.innerHTML = similar.map(p => `
+      <div class="m-prop-card" onclick="location.href='propiedad-mobile.html?id=${p.id}'" style="cursor:pointer;">
+        <img src="${p.photos[0]}" alt="${localText(p.title)}" loading="lazy" width="400" height="160" style="width:100%;height:160px;object-fit:cover;">
+        <div class="m-prop-card-body">
+          <span class="m-prop-price prop-price" data-price-eur="${p.price}">${formatPrice(p.price)}</span>
+          <div class="m-prop-title">${localText(p.title)}</div>
+          <div class="m-prop-address">${localText(p.address)}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Patch: render prop specs in mobile bar
+  const _renderPropertyDetail = renderPropertyDetail;
+  function renderPropertyDetail() {
+    _renderPropertyDetail();
+    // Price in top area
+    const priceTop = document.getElementById('prop-price-top');
+    if (priceTop && property) {
+      priceTop.textContent = property.type === 'alquiler' ? formatPriceRent(property.price) : formatPrice(property.price);
+    }
+    // Specs bar
+    const bar = document.getElementById('prop-features-bar');
+    if (bar && property) {
+      bar.innerHTML = [
+        property.m2 && `<div class="m-prop-spec"><span class="m-prop-spec-val">${property.m2}</span><span class="m-prop-spec-label">m²</span></div>`,
+        property.bedrooms && `<div class="m-prop-spec"><span class="m-prop-spec-val">${property.bedrooms}</span><span class="m-prop-spec-label">Hab.</span></div>`,
+        property.bathrooms && `<div class="m-prop-spec"><span class="m-prop-spec-val">${property.bathrooms}</span><span class="m-prop-spec-label">Baños</span></div>`,
+        property.m2Terrace && `<div class="m-prop-spec"><span class="m-prop-spec-val">${property.m2Terrace}</span><span class="m-prop-spec-label">Terraza m²</span></div>`,
+        property.garage && `<div class="m-prop-spec"><span class="m-prop-spec-val">✓</span><span class="m-prop-spec-label">Garaje</span></div>`,
+        property.elevator && `<div class="m-prop-spec"><span class="m-prop-spec-val">✓</span><span class="m-prop-spec-label">Ascensor</span></div>`,
+      ].filter(Boolean).join('');
+    }
+  }
+
+  function openScheduleVisit() { openModal('schedule-modal'); }
+
+  function shareProperty() {
+    if (navigator.share && property) {
+      navigator.share({ title: localText(property.title), text: `${localText(property.title)} — ${formatPrice(property.price)}`, url: window.location.href });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => { initPropertyPage(); });
+</script>
+</body>
+</html>

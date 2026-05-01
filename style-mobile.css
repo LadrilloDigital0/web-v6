@@ -1,0 +1,820 @@
+/* ============================================================
+   MOBILE STYLES — inmobiliaria-prueba
+   Complementa style.css con ajustes específicos para móvil
+   ============================================================ */
+
+/* --- Variables y reset móvil --- */
+:root {
+  --header-h: 56px;
+  --bottom-nav-h: 64px;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+@media (max-width: 767px) {
+  body {
+    padding-top: var(--header-h);
+    padding-bottom: var(--bottom-nav-h);
+    overscroll-behavior-y: none;
+  }
+}
+
+/* --- Top header compacto --- */
+.m-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: var(--brand-dark);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 900;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+.m-header.light {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+
+.m-logo {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  line-height: 1.1;
+}
+
+.m-header.light .m-logo { color: var(--brand); }
+
+.m-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.m-icon-btn {
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  color: rgba(255,255,255,0.8);
+  background: rgba(255,255,255,0.1);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.m-header.light .m-icon-btn {
+  color: var(--brand);
+  background: var(--bg);
+}
+
+.m-icon-btn:active { background: rgba(255,255,255,0.2); }
+
+/* --- Bottom navigation bar --- */
+.m-bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--bottom-nav-h);
+  background: #fff;
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 900;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+}
+
+.m-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.6rem;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  transition: color 0.15s;
+  min-height: 44px;
+}
+
+.m-nav-item.active { color: var(--brand); }
+.m-nav-item:active { color: var(--brand); }
+
+.m-nav-item svg {
+  width: 22px; height: 22px;
+  stroke-width: 1.5;
+}
+
+/* --- Hero móvil --- */
+.m-hero {
+  position: relative;
+  min-height: calc(100svh - var(--header-h) - var(--bottom-nav-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px 16px 32px;
+  overflow: hidden;
+}
+
+.m-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.03);
+  transition: transform 0.3s;
+}
+
+.m-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(18,38,25,0.85) 30%, rgba(18,38,25,0.35) 70%, rgba(18,38,25,0.1) 100%);
+}
+
+.m-hero-content { position: relative; z-index: 2; }
+
+.m-hero-tag {
+  display: inline-block;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.m-hero-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.6rem;
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 12px;
+}
+
+.m-hero-subtitle {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+/* --- Barra de búsqueda móvil --- */
+.m-search-bar {
+  background: #fff;
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.m-search-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--text);
+  outline: none;
+  background: var(--bg);
+}
+
+.m-search-input:focus { border-color: var(--brand); }
+
+.m-search-selects {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.m-search-select {
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  appearance: none;
+}
+
+.m-search-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--brand);
+  color: var(--accent);
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.m-search-btn:active { background: var(--brand-light); }
+
+/* --- Stats del hero --- */
+.m-hero-stats {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
+
+.m-stat-val {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.m-stat-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.5);
+  margin-top: 3px;
+}
+
+/* --- Secciones generales --- */
+.m-section {
+  padding: 28px 16px;
+}
+
+.m-section-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.m-section-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.9rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+
+.m-section-title em { font-style: italic; color: var(--brand); }
+.m-section-title.on-dark em { color: var(--accent); }
+
+/* --- Tarjetas de propiedad horizontales --- */
+.m-prop-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.m-prop-card:active { box-shadow: 0 4px 20px rgba(28,58,47,0.15); }
+
+.m-prop-card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.m-prop-card-body { padding: 14px 16px; }
+
+.m-prop-price {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--brand);
+  letter-spacing: -0.02em;
+}
+
+.m-prop-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  margin: 4px 0 6px;
+  line-height: 1.3;
+}
+
+.m-prop-address {
+  font-size: 0.8rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.m-prop-features {
+  display: flex;
+  gap: 14px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.m-prop-feature {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* --- Tarjetas de tipo de propiedad (scroll horizontal) --- */
+.m-types-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 0 16px 8px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.m-types-scroll::-webkit-scrollbar { display: none; }
+
+.m-type-card {
+  flex: 0 0 130px;
+  height: 170px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.m-type-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+
+.m-type-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 40%, transparent);
+}
+
+.m-type-card-label {
+  position: absolute;
+  bottom: 10px; left: 10px;
+  color: #fff;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* --- Ventajas (Por qué elegirnos) --- */
+.m-features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.m-feature-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+}
+
+.m-feature-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+
+.m-feature-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.m-feature-desc {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* --- IA Valuation --- */
+.m-ai-section {
+  background: var(--brand);
+  padding: 28px 16px;
+}
+
+.m-ai-card {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 16px;
+}
+
+.m-field label {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 5px;
+  letter-spacing: 0.02em;
+}
+
+.m-field input,
+.m-field select {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255,255,255,0.12);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 10px;
+  color: #fff;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.m-field input::placeholder { color: rgba(255,255,255,0.4); }
+.m-field input:focus,
+.m-field select:focus { border-color: var(--accent); }
+.m-field select option { color: var(--text); background: #fff; }
+
+.m-ai-result {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(201,169,110,0.4);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 14px;
+}
+
+/* --- CTA --- */
+.m-cta {
+  background: var(--bg);
+  padding: 32px 16px;
+  text-align: center;
+}
+
+/* --- Footer móvil simplificado --- */
+.m-footer {
+  background: var(--brand-dark);
+  padding: 24px 16px 20px;
+  text-align: center;
+}
+
+.m-footer-logo {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.3rem;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.m-footer-tagline {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 16px;
+}
+
+.m-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 20px;
+  margin-bottom: 16px;
+}
+
+.m-footer-link {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+}
+
+.m-footer-copy {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.25);
+}
+
+/* --- Filtros móvil (barra superior) --- */
+.m-filter-bar {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  position: sticky;
+  top: var(--header-h);
+  z-index: 10;
+}
+
+.m-filter-bar::-webkit-scrollbar { display: none; }
+
+.m-filter-chip {
+  flex: 0 0 auto;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  font-size: 0.8rem;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px;
+}
+
+.m-filter-chip.active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: var(--accent);
+}
+
+/* --- Panel de filtros como drawer --- */
+.m-filter-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: none;
+}
+
+.m-filter-drawer.open { display: flex; flex-direction: column; justify-content: flex-end; }
+
+.m-filter-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+
+.m-filter-panel {
+  position: relative;
+  background: #fff;
+  border-radius: 20px 20px 0 0;
+  padding: 0 0 24px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.m-filter-handle {
+  width: 36px; height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 14px auto 20px;
+}
+
+.m-filter-section {
+  padding: 0 20px 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.m-filter-section:last-child { border-bottom: none; }
+
+.m-filter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.m-filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.m-filter-option {
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border);
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--muted);
+  min-height: 36px;
+}
+
+.m-filter-option.selected {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: rgba(28,58,47,0.06);
+}
+
+/* --- Detalle de propiedad --- */
+.m-prop-gallery {
+  width: 100%;
+  height: 270px;
+  position: relative;
+  overflow: hidden;
+}
+
+.m-prop-gallery .swiper { height: 100%; }
+.m-prop-gallery .swiper-slide img { width: 100%; height: 270px; object-fit: cover; }
+
+.m-prop-detail-body { padding: 0 16px 20px; }
+
+.m-prop-detail-price {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2rem;
+  font-weight: 500;
+  color: var(--brand);
+  letter-spacing: -0.03em;
+}
+
+.m-prop-detail-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 4px 0 6px;
+}
+
+.m-prop-specs {
+  display: flex;
+  gap: 16px;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  margin: 12px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.m-prop-specs::-webkit-scrollbar { display: none; }
+
+.m-prop-spec {
+  flex: 0 0 auto;
+  text-align: center;
+  min-width: 60px;
+}
+
+.m-prop-spec-val {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--brand);
+  display: block;
+}
+
+.m-prop-spec-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  display: block;
+  margin-top: 2px;
+}
+
+.m-prop-section-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--brand);
+  margin-bottom: 12px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  margin-top: 20px;
+}
+
+/* --- Sticky bottom CTA para detalle de propiedad --- */
+.m-prop-sticky-cta {
+  position: fixed;
+  bottom: var(--bottom-nav-h);
+  left: 0; right: 0;
+  background: #fff;
+  border-top: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex;
+  gap: 10px;
+  z-index: 50;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+}
+
+.m-prop-sticky-cta .m-btn-primary {
+  flex: 1;
+}
+
+/* --- Botones móvil --- */
+.m-btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: var(--brand);
+  color: var(--accent);
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  min-height: 48px;
+  text-align: center;
+}
+
+.m-btn-primary:active { background: var(--brand-light); }
+
+.m-btn-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  background: transparent;
+  color: var(--brand);
+  border: 2px solid var(--brand);
+  border-radius: 12px;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  min-height: 48px;
+  text-align: center;
+}
+
+.m-btn-outline:active { background: rgba(28,58,47,0.08); }
+
+/* --- Sobre nosotros --- */
+.m-team-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.m-team-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  text-align: center;
+  padding-bottom: 16px;
+}
+
+.m-team-photo {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- Contacto --- */
+.m-contact-form {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.m-contact-info-card {
+  background: var(--brand);
+  border-radius: 16px;
+  padding: 20px;
+  color: #fff;
+}
+
+/* --- Cookie notice --- */
+.cookie-hidden { display: none !important; }
+
+#cookie-notice-m {
+  position: fixed;
+  bottom: var(--bottom-nav-h);
+  left: 0; right: 0;
+  background: var(--brand-dark);
+  border-top: 2px solid var(--accent);
+  z-index: 800;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
